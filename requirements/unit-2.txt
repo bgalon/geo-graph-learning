@@ -12,6 +12,7 @@ scipy
 networkx>=3.0
 filterpy
 tslearn
+scikit-image
 folium
 mapclassify
 branca
