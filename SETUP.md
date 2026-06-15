@@ -146,7 +146,7 @@ Once Unit 1 is published, you'll be able to:
 ```bash
 # From the repo root, open the demo notebook
 cd unit-1-graph-substrate
-jupyter notebook demo.ipynb
+jupyter notebook geoai-graph-unit1.ipynb
 ```
 
 Run the **smoke-test cell** (always near the top of every demo notebook).
@@ -162,8 +162,8 @@ upstream repo, so your work won't conflict when you sync new lessons:
 
 ```
 unit-1-graph-substrate/
-├── theory.pdf          ← upstream-owned, READ-ONLY for you
-├── demo.ipynb          ← upstream-owned
+├── theory.pdf              ← upstream-owned, READ-ONLY for you
+├── geoai-graph-unit1.ipynb ← upstream-owned
 ├── homework.md         ← upstream-owned
 └── student-work/       ← YOUR space
     ├── README.md
