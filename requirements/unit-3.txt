@@ -8,5 +8,6 @@ matplotlib>=3.7
 statsmodels>=0.14
 statsforecast>=1.7
 pyarrow>=14
+h5py>=3.0
 folium>=0.15
 gdown>=5.0
