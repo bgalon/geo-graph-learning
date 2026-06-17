@@ -74,6 +74,17 @@ dev = [
     "nbqa",
     "pre-commit",
 ]
+# Local-only tools for the agent-driven notebook bridge (see SETUP.md and
+# .mcp.json). NOT a unit extra → never enters requirements/*.txt or Colab.
+# jupyter-mcp-server itself runs via `uvx` (isolated), so it is not pinned here.
+# jupyter-collaboration 4.x (the RTC extension that lets the agent and student
+# co-edit without save conflicts) requires JupyterLab >=4.4, so both track the
+# current 4.x line together.
+local = [
+    "jupyterlab>=4.4,<5.0",
+    "jupyter-collaboration>=4.0,<5.0",
+    "ipykernel",
+]
 
 [build-system]
 requires = ["hatchling"]

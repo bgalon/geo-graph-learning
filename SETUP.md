@@ -174,6 +174,66 @@ If it passes, your local env is good. If it fails:
   one. If you launched with `uv run … jupyter lab`, it already is.
 - Check the unit's `KNOWN_ISSUES.md` for platform-specific library notes.
 
+## 8. Let the agent set up and tutor you (recommended)
+
+This repo ships two Claude Code **skills** so you can drive everything by talking.
+
+### One-time setup, done for you
+
+In Claude Code, from the repo root, just say:
+
+> **make full setup**  *(or type `/setup`)*
+
+The agent (the `course-setup` skill) will, with your confirmation: `uv sync` the
+unit's deps, register the `geo-graph` kernel, run a headless smoke test, and — if
+you want it — install and **test** the live notebook bridge described next. It
+asks whether you're local or on Colab and adapts.
+
+### The supervised-practice hour
+
+When it's time to practice, say:
+
+> **let's work on the practice of unit 1**  *(or type `/practice`)*
+
+The agent (the `practice-tutor` skill) states the task and dataset, then coaches
+you through the **direct → interpret → extend** loop. Importantly: **the agent
+writes and runs the notebook cells; you direct it (in domain vocabulary) and
+interpret the results.** That division is the point of the course — you learn to
+*command* an analysis and *read* it, not to type it.
+
+### The live agent↔notebook bridge (local only)
+
+So the agent can write and run cells while you watch, this repo uses the
+[Jupyter MCP server](https://github.com/datalayer/jupyter-mcp-server). You'll have
+**two windows**: the **terminal** (Claude Code — you talk to the agent) and your
+**browser** at `localhost:8888` (JupyterLab — cells appear and run live there).
+
+What the bridge needs (the setup skill does all of this for you):
+
+- The `local` dependency extra: `uv sync --extra unit-1 --extra local` — this
+  adds JupyterLab + the real-time-collaboration extension that lets you and the
+  agent edit the same notebook with **no save conflicts** (changes merge and
+  autosave; no "file changed on disk" prompts).
+- A token in your environment. `scripts/start_lab.py` generates one, writes it to
+  a gitignored `.env.local`, and launches JupyterLab. Load it into the shell that
+  runs Claude Code:
+  ```bash
+  set -a; source .env.local; set +a     # macOS / Linux
+  ```
+- The committed `.mcp.json` wires Claude Code to the server (the token comes from
+  your environment — nothing secret is committed). **After first setup, restart
+  Claude Code** so it loads `.mcp.json`, and **approve** the `jupyter` server when
+  prompted. The setup skill then runs a test cell to confirm the bridge works.
+
+If a bug bites (e.g. a duplicate cell, a stuck save), see
+`unit-1-graph-substrate/KNOWN_ISSUES.md` → "Agent notebook bridge".
+
+### On Colab there's no bridge
+
+Claude Code can't drive Colab. There the practice tutor coaches by chat — it
+hands you cells to paste and run, and you tell it what you saw. Same loop, same
+rubric.
+
 ## Workflow during the course
 
 ### Where your work goes

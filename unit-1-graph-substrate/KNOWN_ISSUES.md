@@ -181,6 +181,60 @@ larger graph.
 
 ---
 
+## Agent notebook bridge (Jupyter MCP) — setup + runtime gotchas
+
+These apply only to the **local** "agent writes and runs cells" bridge (see
+`SETUP.md` §8). Colab has no bridge.
+
+### "File Changed" prompts / RTC hash mismatch while a cell runs
+**Symptom:** JupyterLab occasionally pops "File Changed on disk", or the console
+logs `Different hash found for RTC:…`, when the agent runs a cell.
+**Cause:** A timing race between the ~1-second collaboration autosave and cell
+execution — reported against early JupyterLab 4.1.x.
+**Fix:** Use the stack `uv sync --extra local` installs (current JupyterLab 4.4+
+with `jupyter-collaboration` 4.x, where this is largely resolved). If a prompt
+does appear, choose **"Overwrite"/Reload** and continue — no work is lost, the
+shared RTC document is the source of truth.
+
+### The agent's edits don't show up in my browser
+**Symptom:** The agent says it inserted/ran a cell, but the notebook in your
+browser doesn't change.
+**Cause:** The real-time-collaboration extension (`jupyter_collaboration`) is not
+installed or not enabled, so the agent and the browser aren't sharing one live
+document (and saves can clobber each other).
+**Fix:** `uv sync --extra local`, then verify with
+`uv run python scripts/mcp_selfcheck.py` (the RTC check must PASS). If it's
+installed but disabled:
+`uv run jupyter server extension enable jupyter_collaboration`.
+
+### A cell appears twice (duplicate)
+**Symptom:** Running/inserting a cell occasionally leaves a duplicate.
+**Cause:** A known jupyter-mcp-server bug
+([#251](https://github.com/datalayer/jupyter-mcp-server/issues/251)) under
+concurrent edits.
+**Fix:** Refresh the notebook tab; delete the extra cell. The tutor edits **one
+cell at a time** to minimize this.
+
+### The `jupyter` MCP tools aren't available / "authentication failed"
+**Symptom:** The agent can't find the `jupyter` tools, or the bridge fails to
+connect.
+**Cause:** One of: Claude Code wasn't restarted after `.mcp.json` was added; the
+`jupyter` server wasn't approved on first use; `JUPYTER_TOKEN` isn't in the shell
+that launched Claude Code (or doesn't match the running lab); JupyterLab isn't
+running, or is on a different port.
+**Fix:** Run `uv run python scripts/mcp_selfcheck.py` — it pinpoints which of
+these is wrong. Then: `set -a; source .env.local; set +a`, restart Claude Code,
+and approve the `jupyter` server when prompted. Port clash → relaunch with
+`scripts/start_lab.py --port 8889` (it updates `.env.local`).
+
+### First bridge use is slow
+**Symptom:** A long pause the first time the bridge starts.
+**Cause:** `uvx jupyter-mcp-server@1.0.2` downloads the server package once.
+**Fix:** Expected (~1–2 min, one-time). The setup skill pre-warms it with
+`uvx jupyter-mcp-server@1.0.2 --help`.
+
+---
+
 ## Asset-script notes (instructor / `make_overlay_asset.py`, OFF the demo path)
 
 **`make_overlay_asset.py` is NOT on the demo runtime path.** The notebook is
