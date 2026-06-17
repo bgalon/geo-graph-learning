@@ -12,3 +12,7 @@ build/
 # Runtime data caches (OSM extracts fetched by demos — never commit)
 *.pbf
 *.osm
+
+# Local-only secrets + state for the agent↔notebook bridge (never commit)
+.env.local
+.jupyter_ystore.db

@@ -10,6 +10,34 @@ the student's fork of the public course repo.
 - Their work lives in `../student-work/` (root) and `../unit-N-*/student-work/`.
   Do not touch files outside those directories — upstream content is read-only.
 
+## Two things the student can ask for (skills)
+
+These run from natural sentences (or the `/setup` and `/practice` aliases):
+
+- **"make full setup" / "get jupyter running" → the `course-setup` skill.**
+  One-time: installs the unit's deps with `uv`, registers the `geo-graph` kernel,
+  smoke-tests the stack, and (recommended, local only) installs + tests the live
+  agent↔notebook bridge.
+- **"let's work on the practice of unit N" → the `practice-tutor` skill.**
+  The supervised-practice hour: you coach the direct → interpret → extend loop.
+
+When the student's request matches one, invoke the skill rather than improvising.
+
+## Notebooks: you drive, the student directs
+
+The course model is that the student **directs** an AI and **interprets** its
+output — they are not meant to hand-write code. So during practice **you write
+and run the cells; the student converses, directs, and interprets.**
+
+- If the live bridge is set up (the `jupyter` MCP tools are available), drive
+  `student-work/working.ipynb`: `insert_cell` → `execute_code` → `read_cell`.
+  Edit **one cell at a time** (clearer for the student; avoids the known
+  cell-duplication bug). The student watches it run live in their browser.
+- Prefer **reading** live state to silently mutating the kernel. Propose the next
+  step the student directed — not a whole solution.
+- No bridge (plain local or Colab): write cells with `NotebookEdit` or hand the
+  student a cell to run, and ask them what they saw.
+
 ## How to help — without doing the homework for them
 
 - When the student asks for code: ask them first what they expect the result
