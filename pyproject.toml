@@ -72,7 +72,6 @@ unit-4 = [
     "contextily",
     "pyarrow",
     "gdown",
-    "pyraptor",
 ]
 unit-5 = [
     # GNNs — populated during unit-5 build
