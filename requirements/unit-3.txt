@@ -11,3 +11,5 @@ pyarrow>=14
 h5py>=3.0
 folium>=0.15
 gdown>=5.0
+shapely>=2.0
+pyproj
