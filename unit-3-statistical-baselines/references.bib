@@ -1,0 +1,157 @@
+% Unit 3 — Statistical Baselines: machine-readable citations.
+% This is the BibTeX that pairs with further-reading.md — the raw sources behind
+% the theory deck, demo, and practice. Every entry carries a DOI or URL so you
+% (and your agent) can cite or follow any source directly. Plain-language
+% summaries of each item live in further-reading.md.
+
+% ---------------------------------------------------------------------------
+% FOUNDATIONS — ARIMA / Box-Jenkins / forecasting methodology
+% ---------------------------------------------------------------------------
+
+@book{boxjenkins1970,
+  author    = {Box, George E. P. and Jenkins, Gwilym M.},
+  title     = {Time Series Analysis: Forecasting and Control},
+  publisher = {Holden-Day},
+  address   = {San Francisco},
+  year      = {1970},
+  note      = {Foundational text defining the ARIMA model class and the
+               identification--estimation--diagnostic (Box--Jenkins) methodology.
+               Current edition: Box, Jenkins, Reinsel \& Ljung, 5th ed., Wiley, 2015,
+               ISBN 978-1-118-67502-1.},
+  url       = {https://books.google.com/books/about/Time_Series_Analysis.html?id=sRzvAAAAMAAJ}
+}
+
+@book{hyndman2021fpp3,
+  author    = {Hyndman, Rob J. and Athanasopoulos, George},
+  title     = {Forecasting: Principles and Practice},
+  edition   = {3},
+  publisher = {OTexts},
+  address   = {Melbourne, Australia},
+  year      = {2021},
+  note      = {Free online textbook. Ch. 9 (ARIMA), Sec. 9.1 (stationarity \&
+               differencing), Sec. 5.10 (time series cross-validation / rolling
+               forecasting origin), Sec. 5.2 (simple baseline / benchmark methods).},
+  url       = {https://otexts.com/fpp3/}
+}
+
+% ---------------------------------------------------------------------------
+% TRAFFIC-SPECIFIC STATISTICAL BASELINES
+% ---------------------------------------------------------------------------
+
+@article{williams2003seasonal,
+  author  = {Williams, Billy M. and Hoel, Lester A.},
+  title   = {Modeling and Forecasting Vehicular Traffic Flow as a Seasonal
+             {ARIMA} Process: Theoretical Basis and Empirical Results},
+  journal = {Journal of Transportation Engineering},
+  volume  = {129},
+  number  = {6},
+  pages   = {664--672},
+  year    = {2003},
+  doi     = {10.1061/(ASCE)0733-947X(2003)129:6(664)}
+}
+
+@article{rodrigues2022stationarity,
+  author  = {Rodrigues, Filipe},
+  title   = {On the Importance of Stationarity, Strong Baselines and Benchmarks
+             in Transport Prediction Problems},
+  journal = {arXiv preprint},
+  year    = {2022},
+  doi     = {10.48550/arXiv.2203.02954},
+  url     = {https://arxiv.org/abs/2203.02954}
+}
+
+% ---------------------------------------------------------------------------
+% METR-LA / SPATIO-TEMPORAL GNN BRIDGE TO U5
+% ---------------------------------------------------------------------------
+
+@inproceedings{li2018dcrnn,
+  author    = {Li, Yaguang and Yu, Rose and Shahabi, Cyrus and Liu, Yan},
+  title     = {Diffusion Convolutional Recurrent Neural Network: Data-Driven
+               Traffic Forecasting},
+  booktitle = {International Conference on Learning Representations (ICLR)},
+  year      = {2018},
+  doi       = {10.48550/arXiv.1707.01926},
+  url       = {https://arxiv.org/abs/1707.01926}
+}
+
+@article{zhao2019tgcn,
+  author  = {Zhao, Ling and Song, Yujiao and Zhang, Chao and Liu, Yu and
+             Wang, Pu and Lin, Tao and Deng, Min and Li, Haifeng},
+  title   = {{T-GCN}: A Temporal Graph Convolutional Network for Traffic Prediction},
+  journal = {IEEE Transactions on Intelligent Transportation Systems},
+  volume  = {21},
+  number  = {9},
+  pages   = {3848--3858},
+  year    = {2019},
+  doi     = {10.1109/TITS.2019.2935152},
+  url     = {https://arxiv.org/abs/1811.05320}
+}
+
+@article{cui2019tgclstm,
+  author  = {Cui, Zhiyong and Henrickson, Kristian and Ke, Ruimin and Wang, Yinhai},
+  title   = {Traffic Graph Convolutional Recurrent Neural Network: A Deep
+             Learning Framework for Network-Scale Traffic Learning and Forecasting},
+  journal = {IEEE Transactions on Intelligent Transportation Systems},
+  volume  = {21},
+  number  = {11},
+  pages   = {4883--4894},
+  year    = {2019},
+  doi     = {10.1109/TITS.2019.2950416},
+  url     = {https://arxiv.org/abs/1802.07007}
+}
+
+% ---------------------------------------------------------------------------
+% TRANSIT TRAVEL-TIME / BUS-ARRIVAL PREDICTION
+% ---------------------------------------------------------------------------
+
+@article{sun2025hybridmarkov,
+  author  = {Sun, Yuran and Spall, James and Wong, Wai and Zhao, Xilei},
+  title   = {Real-time Bus Travel Time Prediction and Reliability
+             Quantification: A Hybrid Markov Model},
+  journal = {arXiv preprint},
+  year    = {2025},
+  doi     = {10.48550/arXiv.2503.05907},
+  url     = {https://arxiv.org/abs/2503.05907}
+}
+
+@article{kalmanframework2021,
+  author  = {Barbeau, Sean J. and Pena, Pedro and Labrador, Miguel},
+  title   = {An Open-Source Framework to Implement Kalman Filter Bus Arrival
+             Predictions},
+  journal = {Networks and Spatial Economics},
+  year    = {2021},
+  doi     = {10.1007/s11067-021-09541-w},
+  note    = {Paywalled (Springer). Companion to TheTransitClock open-source
+             project; describes an adaptive Kalman filter over GTFS-realtime
+             vehicle positions. Summary built from abstract + project docs;
+             full text not fetched (403/redirect).}
+}
+
+% ---------------------------------------------------------------------------
+% DATASET / SPECIFICATION REFERENCES (non-paper, link-anchored)
+% ---------------------------------------------------------------------------
+
+@misc{gtfsrealtime,
+  author       = {{MobilityData / Google}},
+  title        = {{GTFS} Realtime Reference},
+  howpublished = {Specification, gtfs.org},
+  year         = {2024},
+  url          = {https://gtfs.org/documentation/realtime/reference/}
+}
+
+@misc{hasadnaopenbus,
+  author       = {{The Public Knowledge Workshop (Hasadna)}},
+  title        = {Open Bus: Israeli Public-Transport Data Project (GTFS + SIRI)},
+  howpublished = {GitHub repository},
+  year         = {2024},
+  url          = {https://github.com/hasadna/open-bus}
+}
+
+@misc{statsforecast,
+  author       = {{Nixtla}},
+  title        = {{StatsForecast}: Lightning-fast Forecasting with Statistical
+                  and Econometric Models},
+  howpublished = {Software, GitHub},
+  year         = {2024},
+  url          = {https://github.com/Nixtla/statsforecast}
+}
