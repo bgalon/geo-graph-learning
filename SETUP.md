@@ -177,6 +177,14 @@ top-right will be the project's Python — exactly the env you synced.
 > Re-run with a different `--extra` only matters at install time; one kernel
 > serves every unit you've synced into the same `.venv`.
 
+> **Gotcha — keep `--extra` on every `uv run` (or use `--no-sync`).** Before it
+> runs, `uv run` re-syncs the env to match the extras you pass. A *bare*
+> `uv run python …` (no `--extra`) therefore resolves to the default env and
+> **uninstalls the unit libraries you just synced** — the next import fails. So
+> either repeat the same `--extra unit-<N>` on every `uv run` (as above), or add
+> `--no-sync` to reuse the env exactly as the last `uv sync` left it:
+> `uv run --no-sync python -m ipykernel install …`.
+
 Run the **smoke-test cell** (always near the top of every demo notebook).
 If it passes, your local env is good. If it fails:
 

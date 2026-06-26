@@ -9,7 +9,8 @@ end-to-end MCP round-trip.
 
 Four checks, each with a pass/fail line and a fix hint:
   (a) `uvx jupyter-mcp-server` resolves (and warms the uvx cache)
-  (b) the RTC extension `jupyter_collaboration` is installed AND enabled
+  (b) the RTC server extension (`jupyter_server_ydoc` in jupyter-collaboration
+      4.x, or legacy `jupyter_collaboration`) is installed AND enabled
   (c) JupyterLab is reachable at JUPYTER_URL using JUPYTER_TOKEN
   (d) the `geo-graph` kernelspec is registered
 
@@ -71,6 +72,14 @@ def check_uvx() -> tuple[bool, str]:
     )
 
 
+# The RTC *server* extension changed names across jupyter-collaboration majors:
+# in 4.x it registers as `jupyter_server_ydoc` (the `jupyter_collaboration` name
+# is the frontend/lab piece and does NOT appear in the server-extension list);
+# older lines may still say `jupyter_collaboration`. Accept either so a version
+# bump doesn't trip a false FAIL. Bump this list if the name changes again.
+RTC_SERVER_EXTENSIONS = ("jupyter_server_ydoc", "jupyter_collaboration")
+
+
 def check_rtc() -> tuple[bool, str]:
     code, out = _run(["jupyter", "server", "extension", "list"])
     if code != 0:
@@ -79,22 +88,24 @@ def check_rtc() -> tuple[bool, str]:
             "installed in this env? Run `uv sync --extra local`."
         )
     low = out.lower()
-    if "jupyter_collaboration" not in low:
+    present = next((n for n in RTC_SERVER_EXTENSIONS if n in low), None)
+    if present is None:
         return False, (
-            "jupyter_collaboration (RTC) is NOT installed — the agent and you "
-            "would collide on saves. Run `uv sync --extra local`."
+            "the RTC server extension (jupyter_server_ydoc, from "
+            "jupyter-collaboration) is NOT installed — the agent and you would "
+            "collide on saves. Run `uv sync --extra local`."
         )
-    # The extension lists a line like "jupyter_collaboration ... enabled"
+    # The extension lists a line like "jupyter_server_ydoc ... enabled OK".
     enabled = any(
-        "jupyter_collaboration" in ln.lower() and "enabled" in ln.lower()
+        present in ln.lower() and "enabled" in ln.lower()
         for ln in out.splitlines()
     )
     if not enabled:
         return False, (
-            "jupyter_collaboration is installed but DISABLED. Enable with "
-            "`uv run jupyter server extension enable jupyter_collaboration`."
+            f"RTC server extension {present} is installed but DISABLED. Enable "
+            f"with `uv run --no-sync jupyter server extension enable {present}`."
         )
-    return True, "RTC extension jupyter_collaboration is installed and enabled"
+    return True, f"RTC server extension {present} is installed and enabled"
 
 
 def check_lab_reachable() -> tuple[bool, str]:

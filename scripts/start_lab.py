@@ -71,8 +71,12 @@ def main() -> int:
     print('  # Windows PowerShell: $env:JUPYTER_TOKEN="%s"; $env:JUPYTER_URL="%s"'
           % (token, url))
     print()
+    # `--no-sync`: a bare `uv run` would re-sync to the default (no-extra) env
+    # first, uninstalling the `local` extra (JupyterLab + jupyter-collaboration
+    # RTC) that the bridge depends on. Keep the env exactly as `uv sync
+    # --extra unit-<N> --extra local` left it.
     launch_cmd = (
-        f"uv run jupyter lab --port {args.port} "
+        f"uv run --no-sync jupyter lab --port {args.port} "
         f"--IdentityProvider.token {token} --no-browser"
     )
     print("Launch JupyterLab (RTC enabled via jupyter-collaboration) with:")
@@ -88,7 +92,7 @@ def main() -> int:
         os.execvp(
             "uv",
             [
-                "uv", "run", "jupyter", "lab",
+                "uv", "run", "--no-sync", "jupyter", "lab",
                 "--port", str(args.port),
                 "--IdentityProvider.token", token,
                 "--no-browser",

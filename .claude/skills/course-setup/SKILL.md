@@ -53,21 +53,30 @@ uv sync --extra unit-<N> --extra local
 `--extra local` adds the JupyterLab + RTC stack used by the bridge. Offer
 `--extra all --extra local` if they want every unit.
 
+> **CRITICAL — every `uv run` AFTER this sync must carry `--no-sync`.** A bare
+> `uv run …` re-syncs the env to the *default* extras (none) first, which
+> **uninstalls the unit + local libs you just installed**. So steps 3–5 below
+> all use `uv run --no-sync …`. (Equivalently, repeat the full
+> `--extra unit-<N> --extra local` list on every `uv run` — but `--no-sync` is
+> shorter and can't drift out of step with step 2.)
+
 ### 3. Register a named kernel (idempotent — run after sync)
 ```bash
-uv run python -m ipykernel install --user \
+uv run --no-sync python -m ipykernel install --user \
   --name geo-graph --display-name "Geo-Graph (uv)"
 ```
 So any Jupyter / VS Code sees the synced env as a selectable kernel.
 
 ### 4. Smoke-test the stack (run it — read-only w.r.t. notebooks)
 ```bash
-uv run python scripts/smoke.py --unit <N>
+uv run --no-sync python scripts/smoke.py --unit <N>
 ```
 This imports every library the unit needs and applies version gates **without
 touching the demo notebook**. On failure, surface the exact failed import and
 point at `unit-<N>-*/KNOWN_ISSUES.md`. Do not proceed to the bridge until smoke
-passes.
+passes. (If smoke fails with `ModuleNotFoundError` for libs you just installed,
+a stray bare `uv run` resynced the env down — re-run step 2, then keep
+`--no-sync` on every command.)
 
 ### 5. Offer + install + TEST the live agent↔notebook bridge (recommended)
 
@@ -84,7 +93,7 @@ so verify in **two phases** and tell the student exactly when to restart.
 2. Generate a token, write the gitignored `.env.local`, and launch JupyterLab
    (RTC on) in the background:
    ```bash
-   uv run python scripts/start_lab.py --launch
+   uv run --no-sync python scripts/start_lab.py --launch
    ```
    Run this with `run_in_background: true`. Capture the printed
    `http://localhost:8888/lab?token=…` URL and give it to the student to open.
@@ -95,7 +104,7 @@ so verify in **two phases** and tell the student exactly when to restart.
    ```
 4. Run the real install test (it loads `.env.local` itself):
    ```bash
-   uv run python scripts/mcp_selfcheck.py
+   uv run --no-sync python scripts/mcp_selfcheck.py
    ```
    This checks: uvx resolves, RTC enabled, lab reachable with the token, and the
    `geo-graph` kernel exists. If any check FAILs, **stop** and walk the student

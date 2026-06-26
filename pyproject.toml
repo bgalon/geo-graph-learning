@@ -81,7 +81,15 @@ unit-5 = [
     # `setup_colab.py` handles runtime detection for PyG wheels.
 ]
 all = [
-    # Union of all units. Hand-edit when adding to per-unit extras above.
+    # Union of all built units, so `uv sync --extra all` installs everything.
+    # Self-referential extras: each entry pulls in a per-unit extra defined
+    # above. Add `geo-graph-learning[unit-5]` here when unit-5 gains deps.
+    # NB: hand-edited and public-only — the per-unit publish pipeline
+    # (sync_unit_extra.py) rewrites only `[unit-N]` blocks, never this one.
+    "geo-graph-learning[unit-1]",
+    "geo-graph-learning[unit-2]",
+    "geo-graph-learning[unit-3]",
+    "geo-graph-learning[unit-4]",
 ]
 dev = [
     "papermill",

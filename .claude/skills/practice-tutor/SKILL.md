@@ -45,7 +45,8 @@ open-ended and two good students reach different defensible answers.
   `student-work/`, the student's space).
 - **Local, no bridge:** write cells with the `NotebookEdit` tool into
   `working.ipynb` and ask the student to run them and tell you what they saw — or
-  just run short snippets via `uv run` when that's enough to answer a question.
+  just run short snippets via `uv run --no-sync` when that's enough to answer a
+  question (`--no-sync` so you don't resync the env down and drop the unit libs).
 - **Colab:** pure chat-coaching — hand the student a cell to paste and run, and
   ask them to report the result.
 
