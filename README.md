@@ -26,8 +26,9 @@ Dynamic Navigation — inverse of the original syllabus PDF. See the
 | 4 | [Dynamic Navigation](unit-4-dynamic-navigation/) | Routing under w(t) + multimodal (road vs. transit) Cost of Anarchy. | _coming soon_ |
 | 5 | [Spatio-Temporal GNNs](unit-5-gnn/) | ST-GNN that earns its complexity; attention interrogation. | _coming soon_ |
 
-Lessons are published as tagged releases (`v-unit1`, `v-unit2`, …). Sync your
-fork to pull new lessons.
+Lessons are published as tagged releases (`v-unit1`, `v-unit2`, …). The course
+repo is updated **during the course**, so sync your fork to pull new lessons and
+fixes — see [Staying in sync with the course repo](#staying-in-sync-with-the-course-repo).
 
 ## Getting started
 
@@ -39,6 +40,41 @@ Read [`SETUP.md`](./SETUP.md). Briefly:
 4. `uv sync --extra unit-1` (or `--extra all` for everything).
 5. Your work goes in `student-work/` directories — they're conflict-free
    space designed to survive upstream syncs.
+
+## Staying in sync with the course repo
+
+This repo is the **upstream** source. We update it **during the course** — new
+lessons, fixes to demos, corrected instructions — so plan to pull updates into
+your fork regularly (before each new unit, and any time you're asked to).
+
+**One-time setup** (done once, right after you clone your fork): add this repo
+as the `upstream` remote — see [`SETUP.md` §3](./SETUP.md#3-add-the-upstream-remote).
+
+```bash
+git remote add upstream https://github.com/bgalon/geo-graph-learning.git
+git remote -v   # 'origin' = your fork, 'upstream' = the course source
+```
+
+**Each time you want the latest content:**
+
+```bash
+git checkout main
+git fetch upstream
+git merge upstream/main      # pull in new/updated lessons and fixes
+git push origin main         # keep your fork's main up to date
+```
+
+Your work lives in `student-work/` directories, which upstream never touches —
+so syncs are conflict-free **as long as you only edit files under
+`student-work/`**. If `git merge` reports a conflict, it means a file *outside*
+`student-work/` was edited locally; the safest fix is to keep the upstream
+version (`git checkout upstream/main -- <file>`) and move any of your own work
+into a `student-work/` folder.
+
+> **Tip:** commit (or stash) your own changes before `git fetch`/`git merge` so
+> the merge has a clean tree to work with. Prefer a stable snapshot over the
+> moving `main`? Pull a tagged release instead: `git fetch upstream --tags &&
+> git checkout v-unit1`.
 
 ## The rubric
 
